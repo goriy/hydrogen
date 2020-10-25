@@ -35,16 +35,19 @@ before_build:
       g++ --version
 
       REM *** Install dependencies ***
-      c:\msys64\usr\bin\bash c:\msys64\usr\bin\pacman-key --refresh-keys      
-      c:\msys64\usr\bin\pacman --noconfirm -Sy
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libarchive
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libsndfile
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-cppunit
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-portaudio
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-portmidi
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libwinpthread-git
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-qt5
-      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-ladspa-sdk
+
+      set PATH=%PATH%;c:\msys64\usr\bin
+      bash c:\msys64\usr\bin\pacman-key --init      
+      bash c:\msys64\usr\bin\pacman-key --refresh-keys      
+      pacman --noconfirm -Sy
+      pacman --noconfirm -S -q %MSYS_REPO%-libarchive
+      pacman --noconfirm -S -q %MSYS_REPO%-libsndfile
+      pacman --noconfirm -S -q %MSYS_REPO%-cppunit
+      pacman --noconfirm -S -q %MSYS_REPO%-portaudio
+      pacman --noconfirm -S -q %MSYS_REPO%-portmidi
+      pacman --noconfirm -S -q %MSYS_REPO%-libwinpthread-git
+      pacman --noconfirm -S -q %MSYS_REPO%-qt5
+      pacman --noconfirm -S -q %MSYS_REPO%-ladspa-sdk
 
       REM *** INIT SUBMODULES ***
       git submodule init
