@@ -39,8 +39,14 @@ before_build:
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libsndfile
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-cppunit
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-portaudio
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-portmidi
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libwinpthread-git
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-qt5
+      c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-ladspa-sdk
+
+      REM *** INIT SUBMODULES ***
+      git submodule init
+      git submodule update
 
       REM *** Configure build ***
       rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
@@ -75,8 +81,8 @@ build_script:
 
       REM *** Deploy other libraries ***
       set PYTHON=C:\Python38\python
-      %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\requirements.txt
-      %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\copy_thirdparty_dlls.py --no-overwrite -V info -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs src/gui/hydrogen.exe src/core/libhydrogen-core-1.0.0.dll
+      %PYTHON% -m pip install -r %APPVEYOR_BUILD_FOLDER%\windows\ci\requirements.txt
+      %PYTHON% %APPVEYOR_BUILD_FOLDER%\windows\ci\copy_thirdparty_dlls.py --no-overwrite -V info -L %MSYS%\bin -d %APPVEYOR_BUILD_FOLDER%\windows\extralibs src/gui/hydrogen.exe src/core/libhydrogen-core-1.1.0.dll
 
       REM *** Build installer ***
       cpack -G NSIS -v
@@ -85,7 +91,7 @@ build_script:
       set INSTDIR=C:\hydrogen
       mkdir %INSTDIR%
       FOR %%F IN (Hydrogen-*.exe) DO %%F /S /D=%INSTDIR%
-      %PYTHON% -m pytest %APPVEYOR_BUILD_FOLDER%\windows\test_installation.py --junitxml=test_installation.xml
+      %PYTHON% -m pytest %APPVEYOR_BUILD_FOLDER%\windows\ci\test_installation.py --junitxml=test_installation.xml
 
 
 artifacts:
