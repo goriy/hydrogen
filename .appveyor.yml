@@ -35,6 +35,7 @@ before_build:
       g++ --version
 
       REM *** Install dependencies ***
+      c:\msys64\usr\bin\pacman-key --refresh-keys      
       c:\msys64\usr\bin\pacman --noconfirm -Sy
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libarchive
       c:\msys64\usr\bin\pacman --noconfirm -S -q %MSYS_REPO%-libsndfile
